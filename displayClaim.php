@@ -31,15 +31,15 @@ if (!isset($_SESSION['user_id'])) {
         h2 {
             text-align: center;
             position: fixed;
-    top: 60px;
+    top: 9px;
     left: 50%;
     transform: translateX(-50%);
         }
 
         .container {
-            max-width: 500px;
+            max-width: 100%;
             overflow-y: scroll; /* Enable vertical scrolling */
-            max-height: 630px;
+            max-height: 439px;
         }
 
         .container::-webkit-scrollbar {
@@ -121,11 +121,13 @@ if (!isset($_SESSION['user_id'])) {
         // Query to retrieve all claims from the database
         $sql = "SELECT * FROM claims";
         $result = $conn->query($sql);
+        $total_claims = $result->num_rows;
 
         // Check if there are any claims retrieved
         if ($result->num_rows > 0) {
+            $total_claim_amount = 0;
             // Output data of each row
-            echo "<h2>List of Claims</h2>";
+            echo "<h2>List of Claims ($total_claims)</h2>";
             while ($row = $result->fetch_assoc()) {
                 echo "<div class='claim-container'>";
                 echo "<div class='claim-name'>" . $row["claim_name"] . "</div>";
@@ -139,7 +141,11 @@ if (!isset($_SESSION['user_id'])) {
                 echo "</form>";
                 
                 echo "</div>";
+
+                // Add the total claim amount
+                $total_claim_amount += $row["total_claim"];
             }
+            
         } else {
             echo "No claims found";
         }
